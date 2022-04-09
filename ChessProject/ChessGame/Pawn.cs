@@ -4,16 +4,19 @@ using ChessProject.Board.Enums;
 
 namespace ChessProject.ChessGame
 {
+    //class for configuration of the "Pawn" piece, heir class of the chess piece class
     internal class Pawn : ChessPiece
     {
+        //constructor
         public Pawn(BoardGame boardGame, PieceColor pieceColor) : base(pieceColor, boardGame)
         {
         }
-
+        //method to print the letter related to the piece
         public override string ToString()
         {
             return "P";
         }
+        // class helper method to check if movement is possible
         private bool ThereIsEnemy(Position position)
         {
             ChessPiece piece = Board.PiecePosition(position);
@@ -29,7 +32,7 @@ namespace ChessProject.ChessGame
             ChessPiece chessPiece = Board.PiecePosition(position);
             return chessPiece == null || chessPiece.Color != Color;
         }
-
+        //method to check the possible moves of the chess piece
         public override bool[,] PossibleMoves()
         {
             bool[,] result = new bool[Board.Line, Board.Column];

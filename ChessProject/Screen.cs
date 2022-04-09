@@ -3,10 +3,10 @@ using ChessProject.ChessGame;
 using ChessProject.Board.Enums;
 
 namespace ChessProject
-{
+{// class to the print screen the game 
     internal class Screen
     {
-
+        //main method to show the game
         public static void PrintGame(ChessGameConfig chessGame)
         {
             Console.Clear();
@@ -30,7 +30,7 @@ namespace ChessProject
             }
 
         }
-
+        //main method to print the captured pieces
         public static void PrintCapturedPieces(ChessGameConfig chessGame)
         {
             Console.WriteLine("\nCaptured Pieces: ");
@@ -43,6 +43,7 @@ namespace ChessProject
             Console.ForegroundColor = aux;
 
         }
+        //subtitle method for Portuguese - Brazil
         public static void SubtitlePtBR()
         {
             Console.WriteLine("\nSubtitle - Legenda");
@@ -53,6 +54,7 @@ namespace ChessProject
             Console.WriteLine("Q = Queen = Rainha");
             Console.WriteLine("K = King = Rei");
         }
+        //method to traverse set and show captured pieces
         public static void PrintSetCapturedPiece(HashSet<ChessPiece> setPieces)
         {
             Console.Write("[");
@@ -62,6 +64,8 @@ namespace ChessProject
             }
             Console.Write("]");
         }
+
+        //method to print board
         public static void PrintBoard(BoardGame board)
         {
             for (int i = 0; i < board.Line; i++)
@@ -69,12 +73,13 @@ namespace ChessProject
                 Console.Write((8 - i) + " ");
                 for (int j = 0; j < board.Column; j++)
                 {
-                    PrintPiece(board.PiecePosition(i, j));
+                    PrintPiece(board.BoardSize(i, j));
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
         }
+        //overriden method to print board
         public static void PrintBoard(BoardGame board, bool[,] possiblePossitions)
         {
             ConsoleColor originalColor = Console.BackgroundColor;
@@ -93,7 +98,7 @@ namespace ChessProject
                     {
                         Console.BackgroundColor = originalColor;
                     }
-                    PrintPiece(board.PiecePosition(i, j));
+                    PrintPiece(board.BoardSize(i, j));
                     Console.BackgroundColor = originalColor;
                 }
                 Console.WriteLine();
@@ -101,6 +106,8 @@ namespace ChessProject
             Console.WriteLine("  a b c d e f g h");
             Console.BackgroundColor = originalColor;
         }
+
+        //method to read piece position
         public static ChessPosition ReadChessPosition()
         {
             string readChessPosition = Console.ReadLine();
@@ -108,7 +115,7 @@ namespace ChessProject
             int line = int.Parse(readChessPosition.Substring(1));
             return new ChessPosition(column, line);
         }
-
+        // method to print chess pieces in board
         public static void PrintPiece(ChessPiece chessPiece)
         {
 

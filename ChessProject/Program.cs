@@ -8,6 +8,7 @@ namespace ChessProject
 {
     class Program
     {
+        //main program method
         public static void Main(string[] args)
         {
 

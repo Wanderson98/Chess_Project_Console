@@ -1,11 +1,12 @@
 ﻿using ChessProject.Board;
 using ChessProject.Board.Exceptions;
 using ChessProject.Board.Enums;
-
+//main class of the chess game, where the verification of rules, pieces, etc.
 namespace ChessProject.ChessGame
-{
+{   
     internal class ChessGameConfig
-    {
+    {   
+        //attributes
         public BoardGame Board { get; private set; }
         public int Turn { get; private set; }
         public PieceColor CurrentPlayer { get; private set; }
@@ -13,7 +14,7 @@ namespace ChessProject.ChessGame
         public bool Check { get; private set; }
         private HashSet<ChessPiece> chessPieces;
         private HashSet<ChessPiece> piecesCaptured;
-
+        //constructor that start the game and the initial configuration 
         public ChessGameConfig()
         {
             Board = new BoardGame(8, 8);
@@ -25,7 +26,7 @@ namespace ChessProject.ChessGame
             piecesCaptured = new HashSet<ChessPiece>();
             AddPiecesInGame();
         }
-
+        //method to execute the movement of the pieces
         public ChessPiece ExecuteMovement(Position originalPosition, Position destinationPosition)
         {
             ChessPiece chessPiece = Board.RemovePiece(originalPosition);
@@ -39,7 +40,7 @@ namespace ChessProject.ChessGame
 
             return CapturePiece;
         }
-
+        // method to undo certain movement according to some situation and checkmate check
         public void UndoMove(Position originalPosition, Position destinationPosition, ChessPiece capturedPiece)
         {
             ChessPiece chessPiece = Board.RemovePiece(destinationPosition);
@@ -51,6 +52,7 @@ namespace ChessProject.ChessGame
             }
             Board.AddPieceInBoard(chessPiece, originalPosition);
         }
+        //main method for executing check moves and checkmate and checkmate calls
         public void MakePlay(Position originalPosition, Position destinationPosition)
         {
             ChessPiece capturedPiece = ExecuteMovement(originalPosition, destinationPosition);
@@ -81,6 +83,7 @@ namespace ChessProject.ChessGame
             }
            
         }
+        //method to change player turn
         private void ChangePlayer()
         {
             if (CurrentPlayer == PieceColor.White)
@@ -92,7 +95,7 @@ namespace ChessProject.ChessGame
                 CurrentPlayer = PieceColor.White;
             }
         }
-
+        //method to validate the initial position of the move
         public void ValidOriginalPosition(Position position)
         {
             if (Board.PiecePosition(position) == null)
@@ -107,8 +110,9 @@ namespace ChessProject.ChessGame
             {
                 throw new BoardException("There are no possible moves for the chosen piece!!!");
             }
-        }
 
+        }
+        //method to validate the destination position of the move
         public void ValidDestinationPosition(Position originalPosition, Position destinationPosition)
         {
             if (!Board.PiecePosition(originalPosition).CanMoveTo(destinationPosition))
@@ -116,7 +120,7 @@ namespace ChessProject.ChessGame
                 throw new BoardException("Destination position invalid!!!");
             }
         }
-
+        //method to check and store the captured pieces
         public HashSet<ChessPiece> CapturedPieces(PieceColor color)
         {
             HashSet<ChessPiece> aux = new HashSet<ChessPiece>();
@@ -129,7 +133,7 @@ namespace ChessProject.ChessGame
             }
             return aux;
         }
-
+        //method to check and store the pieces in the game
         public HashSet<ChessPiece> PiecesInGame(PieceColor color)
         {
             HashSet<ChessPiece> aux = new HashSet<ChessPiece>();
@@ -143,6 +147,7 @@ namespace ChessProject.ChessGame
             aux.ExceptWith(CapturedPieces(color));
             return aux;
         }
+        //method to check the opponent's color
         private PieceColor Adversary(PieceColor color)
         {
             if (color == PieceColor.White)
@@ -154,7 +159,7 @@ namespace ChessProject.ChessGame
                 return PieceColor.White;
             }
         }
-
+        //method to check which piece is king
         private ChessPiece KingPiece(PieceColor color)
         {
             foreach (ChessPiece x in PiecesInGame(color))
@@ -166,7 +171,7 @@ namespace ChessProject.ChessGame
             }
             return null;
         }
-
+        //method to check if the player is in check
         public bool ItIsInCheck(PieceColor color)
         {
             ChessPiece king = KingPiece(color);
@@ -188,7 +193,7 @@ namespace ChessProject.ChessGame
             }
             return false;
         }
-
+        //method to check if the player is in checkmate 
         public bool TestCheckmate(PieceColor color)
         {
             if (!ItIsInCheck(color))
@@ -223,13 +228,14 @@ namespace ChessProject.ChessGame
 
 
         }
+        //method to add chess pieces
         public void AddNewPiece(char column, int line, ChessPiece piece)
         {
             Board.AddPieceInBoard(piece, new ChessPosition(column, line).ToPosition());
             chessPieces.Add(piece);
 
         }
-
+        //method to add chess pieces to the board
         private void AddPiecesInGame()
         {
             AddNewPiece('a', 1, new Rook(Board, PieceColor.White));
