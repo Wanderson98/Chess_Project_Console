@@ -9,9 +9,9 @@ namespace ChessProject.Board
         public int NumberOfMoves { get; protected set; }
         public BoardGame Board { get; protected set; }
 
-        public ChessPiece(Position position, PieceColor color, BoardGame board)
+        public ChessPiece(PieceColor color, BoardGame board)
         {
-            Position = position;
+            Position = null;
             Color = color;
             Board = board;
             NumberOfMoves = 0;
