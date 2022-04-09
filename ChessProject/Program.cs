@@ -6,11 +6,11 @@ namespace ChessProject
     {
         public static void Main(string[] args)
         {
-            Position position;
+            BoardGame position;
 
-            position = new Position(2, 3);
+            position = new BoardGame(8, 8);
 
-            Console.WriteLine(position);
+            Screen.PrintBoard(position);
 
             Console.ReadLine();
         }

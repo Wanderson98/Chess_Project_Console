@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace ChessProject.Board.Enums
 {
-    internal class PieceColor
+    enum PieceColor
     {
+        White,
+        Black,
+        Red,
+        Green,
+        Yellow,
+        Blue,
+        Orange,
     }
 }
