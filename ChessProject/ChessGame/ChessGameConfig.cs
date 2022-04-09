@@ -69,8 +69,17 @@ namespace ChessProject.ChessGame
                 Check = false;
             }
 
-            Turn++;
-            ChangePlayer();
+            if (TestCheckmate(Adversary(CurrentPlayer)))
+            {
+                GameOver = true;
+
+            }
+            else
+            {
+                Turn++;
+                ChangePlayer();
+            }
+           
         }
         private void ChangePlayer()
         {
@@ -179,30 +188,85 @@ namespace ChessProject.ChessGame
             }
             return false;
         }
+
+        public bool TestCheckmate(PieceColor color)
+        {
+            if (!ItIsInCheck(color))
+            {
+                return false;
+            }
+
+            foreach (ChessPiece aux in PiecesInGame(color))
+            {
+                bool[,] result = aux.PossibleMoves();
+                for (int i = 0; i < Board.Line; i++)
+                {
+                    for (int j = 0; j < Board.Column; j++)
+                    {
+                        if (result[i, j])
+                        {
+                            Position origin = aux.Position;
+                            Position destination = new Position(i, j);
+                            ChessPiece capturedPiece = ExecuteMovement(origin, destination);
+                            bool testCheck = ItIsInCheck(color);
+                            UndoMove(origin, destination, capturedPiece);
+                            if (!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+
+
+        }
         public void AddNewPiece(char column, int line, ChessPiece piece)
         {
             Board.AddPieceInBoard(piece, new ChessPosition(column, line).ToPosition());
             chessPieces.Add(piece);
-   
+
+        }
+
+        private void AddPiecesInGame()
+        {
+            AddNewPiece('a', 1, new Rook(Board, PieceColor.White));
+            AddNewPiece('b', 1, new Knight(Board, PieceColor.White));
+            AddNewPiece('c', 1, new Bishop(Board, PieceColor.White));
+            AddNewPiece('d', 1, new Queen(Board, PieceColor.White));
+            AddNewPiece('e', 1, new King(Board, PieceColor.White));
+            AddNewPiece('f', 1, new Bishop(Board, PieceColor.White));
+            AddNewPiece('g', 1, new Knight(Board, PieceColor.White));
+            AddNewPiece('h', 1, new Rook(Board, PieceColor.White));
+            AddNewPiece('a', 2, new Pawn(Board, PieceColor.White));
+            AddNewPiece('b', 2, new Pawn(Board, PieceColor.White));
+            AddNewPiece('c', 2, new Pawn(Board, PieceColor.White));
+            AddNewPiece('d', 2, new Pawn(Board, PieceColor.White));
+            AddNewPiece('e', 2, new Pawn(Board, PieceColor.White));
+            AddNewPiece('f', 2, new Pawn(Board, PieceColor.White));
+            AddNewPiece('g', 2, new Pawn(Board, PieceColor.White));
+            AddNewPiece('h', 2, new Pawn(Board, PieceColor.White));
+
+            AddNewPiece('a', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('b', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('c', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('d', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('e', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('f', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('g', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('h', 7, new Pawn(Board, PieceColor.Black));
+            AddNewPiece('a', 8, new Rook(Board, PieceColor.Black));
+            AddNewPiece('b', 8, new Knight(Board, PieceColor.Black));
+            AddNewPiece('c', 8, new Bishop(Board, PieceColor.Black));
+            AddNewPiece('d', 8, new Queen(Board, PieceColor.Black));
+            AddNewPiece('e', 8, new King(Board, PieceColor.Black));
+            AddNewPiece('f', 8, new Bishop(Board, PieceColor.Black));
+            AddNewPiece('g', 8, new Knight(Board, PieceColor.Black));
+            AddNewPiece('h', 8, new Rook(Board, PieceColor.Black));
+
+
+        }
     }
-
-    private void AddPiecesInGame()
-    {
-        AddNewPiece('c', 1, new Rook(Board, PieceColor.White));
-        AddNewPiece('c', 2, new Rook(Board, PieceColor.White));
-        AddNewPiece('d', 2, new Rook(Board, PieceColor.White));
-        AddNewPiece('e', 2, new Rook(Board, PieceColor.White));
-        AddNewPiece('e', 1, new Rook(Board, PieceColor.White));
-        AddNewPiece('d', 1, new King(Board, PieceColor.White));
-
-        AddNewPiece('c', 7, new Rook(Board, PieceColor.Black));
-        AddNewPiece('c', 8, new Rook(Board, PieceColor.Black));
-        AddNewPiece('d', 7, new Rook(Board, PieceColor.Black));
-        AddNewPiece('e', 7, new Rook(Board, PieceColor.Black));
-        AddNewPiece('e', 8, new Rook(Board, PieceColor.Black));
-        AddNewPiece('d', 8, new King(Board, PieceColor.Black));
-
-
-    }
-}
 }

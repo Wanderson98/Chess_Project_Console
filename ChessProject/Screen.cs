@@ -12,31 +12,51 @@ namespace ChessProject
             Console.Clear();
             Screen.PrintBoard(chessGame.Board);
             PrintCapturedPieces(chessGame);
+            SubtitlePtBR();
             Console.WriteLine("\nTurn: " + chessGame.Turn);
-            Console.WriteLine("Waiting for play: " + chessGame.CurrentPlayer);
-            if (chessGame.Check)
+            if (!chessGame.GameOver)
             {
-                Console.WriteLine("YOU ARE CHECK !!!");
+                Console.WriteLine("Waiting for play: " + chessGame.CurrentPlayer);
+                if (chessGame.Check)
+                {
+                    Console.WriteLine("YOU ARE CHECK !!!");
+                }
             }
+            else
+            {
+                Console.WriteLine("CHECKMATE !!!"); 
+                Console.WriteLine("WINNER : " + chessGame.CurrentPlayer);
+                Console.ReadLine();
+            }
+
         }
 
         public static void PrintCapturedPieces(ChessGameConfig chessGame)
         {
-            Console.WriteLine("Captured Pieces: ");
+            Console.WriteLine("\nCaptured Pieces: ");
             Console.Write("White:");
-            PrintSetCapturedPiece(chessGame.CapturedPieces(PieceColor.White));  
+            PrintSetCapturedPiece(chessGame.CapturedPieces(PieceColor.White));
             Console.Write("\nBlack:");
             ConsoleColor aux = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
             PrintSetCapturedPiece(chessGame.CapturedPieces(PieceColor.Black));
-            Console.ForegroundColor= aux; 
-            
-        }
+            Console.ForegroundColor = aux;
 
+        }
+        public static void SubtitlePtBR()
+        {
+            Console.WriteLine("\nSubtitle - Legenda");
+            Console.WriteLine("P = Pawn = Peão");
+            Console.WriteLine("R = Rook = Torre");
+            Console.WriteLine("N = Knight = Cavalo");
+            Console.WriteLine("B = Bishop = Bispo");
+            Console.WriteLine("Q = Queen = Rainha");
+            Console.WriteLine("K = King = Rei");
+        }
         public static void PrintSetCapturedPiece(HashSet<ChessPiece> setPieces)
         {
             Console.Write("[");
-           foreach (ChessPiece piece in setPieces)
+            foreach (ChessPiece piece in setPieces)
             {
                 Console.Write(piece + ", ");
             }
@@ -113,6 +133,6 @@ namespace ChessProject
             }
         }
 
-       
+
     }
 }

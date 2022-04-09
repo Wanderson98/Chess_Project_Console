@@ -46,6 +46,8 @@ namespace ChessProject
                 }
 
             }
+            Console.Clear();
+            Screen.PrintGame(chessGame);
 
         }
     }
