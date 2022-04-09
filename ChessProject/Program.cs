@@ -22,6 +22,11 @@ namespace ChessProject
 
                     Console.Write("\nEnter the original position: "  );
                     Position originalPosition = Screen.ReadChessPosition().ToPosition();
+
+                    bool[,] possiblePositions = chessGame.Board.PiecePosition(originalPosition).PossibleMoves();
+                    Console.Clear();
+                    Screen.PrintBoard(chessGame.Board, possiblePositions);
+
                     Console.Write("Enter the destination position: ");
                     Position destinationPosition = Screen.ReadChessPosition().ToPosition();
 

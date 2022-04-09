@@ -11,6 +11,11 @@ namespace ChessProject.Board
             Line = line;
             Column = column;
         }
+        public void SetValues(int line, int column)
+        {
+            Line = line;
+            Column = column;
+        }
 
         public override string ToString()
         {
