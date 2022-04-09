@@ -11,12 +11,17 @@ namespace ChessProject.ChessGame
         public PieceColor CurrentPlayer { get; private set; }
         public bool GameOver { get; private set; }
 
+        private HashSet<ChessPiece> chessPieces;
+        private HashSet<ChessPiece> piecesCaptured;
+
         public ChessGameConfig()
         {
             Board = new BoardGame(8, 8);
             Turn = 1;
             CurrentPlayer = PieceColor.White;
             GameOver = false;
+            chessPieces = new HashSet<ChessPiece>();
+            piecesCaptured = new HashSet<ChessPiece>();
             AddPiecesInGame();
         }
 
@@ -26,6 +31,10 @@ namespace ChessProject.ChessGame
             chessPiece.IncrementNumberOfMoves();
             ChessPiece CapturePiece = Board.RemovePiece(destinationPosition);
             Board.AddPieceInBoard(chessPiece, destinationPosition);
+            if(CapturePiece != null)
+            {
+                piecesCaptured.Add(CapturePiece);
+            }
         }
         public void MakePlay(Position originalPosition, Position destinationPosition)
         {
@@ -47,17 +56,17 @@ namespace ChessProject.ChessGame
 
         public void ValidOriginalPosition(Position position)
         {
-            if(Board.PiecePosition(position) == null)
+            if (Board.PiecePosition(position) == null)
             {
-                throw new BoardException("There is no piece in the chosen origin position!!!"); 
+                throw new BoardException("There is no piece in the chosen origin position!!!");
             }
-            if(CurrentPlayer != Board.PiecePosition(position).Color)
+            if (CurrentPlayer != Board.PiecePosition(position).Color)
             {
                 throw new BoardException("The chosen piece is not yours!!!");
             }
             if (!Board.PiecePosition(position).ThereIsPossibleMoves())
             {
-                throw new BoardException("There are no possible moves for the chosen piece!!!"); 
+                throw new BoardException("There are no possible moves for the chosen piece!!!");
             }
         }
 
@@ -68,21 +77,55 @@ namespace ChessProject.ChessGame
                 throw new BoardException("Destination position invalid!!!");
             }
         }
+
+        public HashSet<ChessPiece> CapturedPieces(PieceColor color)
+        {
+            HashSet<ChessPiece> aux = new HashSet<ChessPiece>();
+            foreach (ChessPiece x in piecesCaptured)
+            {
+                if(x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            return aux;
+        }
+
+        public HashSet<ChessPiece> PiecesInGame(PieceColor color)
+        {
+            HashSet<ChessPiece> aux = new HashSet<ChessPiece>();
+            foreach (ChessPiece x in chessPieces)
+            {
+                if (x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            aux.ExceptWith(CapturedPieces(color));
+            return aux;
+        }
+
+        public void AddNewPiece(char column, int line, ChessPiece piece)
+        {
+            Board.AddPieceInBoard(piece, new ChessPosition(column, line).ToPosition());
+            chessPieces.Add(piece);
+        }
         private void AddPiecesInGame()
         {
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.White), new ChessPosition('c', 1).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.White), new ChessPosition('c', 2).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.White), new ChessPosition('d', 2).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.White), new ChessPosition('e', 2).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.White), new ChessPosition('e', 1).ToPosition());
-            Board.AddPieceInBoard(new King(Board, PieceColor.White), new ChessPosition('d', 1).ToPosition());
+            AddNewPiece('c', 1, new Rook(Board, PieceColor.White));
+            AddNewPiece('c', 2, new Rook(Board, PieceColor.White));
+            AddNewPiece('d', 2, new Rook(Board, PieceColor.White));
+            AddNewPiece('e', 2, new Rook(Board, PieceColor.White));
+            AddNewPiece('e', 1, new Rook(Board, PieceColor.White));
+            AddNewPiece('d', 1, new King(Board, PieceColor.White));
 
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.Black), new ChessPosition('c', 7).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.Black), new ChessPosition('c', 8).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.Black), new ChessPosition('d', 7).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.Black), new ChessPosition('e', 7).ToPosition());
-            Board.AddPieceInBoard(new Rook(Board, PieceColor.Black), new ChessPosition('e', 8).ToPosition());
-            Board.AddPieceInBoard(new King(Board, PieceColor.Black), new ChessPosition('d', 8).ToPosition());
+            AddNewPiece('c', 7, new Rook(Board, PieceColor.Black));
+            AddNewPiece('c', 8, new Rook(Board, PieceColor.Black));
+            AddNewPiece('d', 7, new Rook(Board, PieceColor.Black));
+            AddNewPiece('e', 7, new Rook(Board, PieceColor.Black));
+            AddNewPiece('e', 8, new Rook(Board, PieceColor.Black));
+            AddNewPiece('d', 8, new King(Board, PieceColor.Black));
+
 
         }
     }

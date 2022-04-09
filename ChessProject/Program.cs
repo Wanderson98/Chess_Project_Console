@@ -18,10 +18,7 @@ namespace ChessProject
             {
                 try
                 {
-                    Console.Clear();
-                    Screen.PrintBoard(chessGame.Board);
-                    Console.WriteLine("\nTurn: " + chessGame.Turn);
-                    Console.WriteLine("Waiting for play: " + chessGame.CurrentPlayer);
+                    Screen.PrintGame(chessGame);
                     Console.Write("\nEnter the original position: ");
                     Position originalPosition = Screen.ReadChessPosition().ToPosition();
                     chessGame.ValidOriginalPosition(originalPosition);
@@ -33,7 +30,7 @@ namespace ChessProject
 
                     Console.Write("\nEnter the destination position: ");
                     Position destinationPosition = Screen.ReadChessPosition().ToPosition();
-                    chessGame.ValidDestinationPosition(originalPosition,destinationPosition);
+                    chessGame.ValidDestinationPosition(originalPosition, destinationPosition);
 
 
                     chessGame.MakePlay(originalPosition, destinationPosition);
