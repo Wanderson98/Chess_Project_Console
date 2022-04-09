@@ -10,40 +10,46 @@ namespace ChessProject
     {
         public static void Main(string[] args)
         {
-          
-            try
-            {
-                ChessGameConfig chessGame = new ChessGameConfig();
 
-                while (!chessGame.GameOver)
+
+            ChessGameConfig chessGame = new ChessGameConfig();
+
+            while (!chessGame.GameOver)
+            {
+                try
                 {
                     Console.Clear();
                     Screen.PrintBoard(chessGame.Board);
-
-                    Console.Write("\nEnter the original position: "  );
+                    Console.WriteLine("\nTurn: " + chessGame.Turn);
+                    Console.WriteLine("Waiting for play: " + chessGame.CurrentPlayer);
+                    Console.Write("\nEnter the original position: ");
                     Position originalPosition = Screen.ReadChessPosition().ToPosition();
+                    chessGame.ValidOriginalPosition(originalPosition);
 
                     bool[,] possiblePositions = chessGame.Board.PiecePosition(originalPosition).PossibleMoves();
+
                     Console.Clear();
                     Screen.PrintBoard(chessGame.Board, possiblePositions);
 
-                    Console.Write("Enter the destination position: ");
+                    Console.Write("\nEnter the destination position: ");
                     Position destinationPosition = Screen.ReadChessPosition().ToPosition();
+                    chessGame.ValidDestinationPosition(originalPosition,destinationPosition);
 
-                    chessGame.ExecuteMovement(originalPosition, destinationPosition);
+
+                    chessGame.MakePlay(originalPosition, destinationPosition);
+                }
+                catch (BoardException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("unexpected error " + e.Message);
                 }
 
-                
-            
             }
-            catch (BoardException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-          
 
-       
-           
         }
     }
 }

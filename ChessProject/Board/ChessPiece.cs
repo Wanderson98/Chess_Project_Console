@@ -22,6 +22,27 @@ namespace ChessProject.Board
             NumberOfMoves++;
         }
 
+        public bool ThereIsPossibleMoves()
+        {
+            bool[,] result = PossibleMoves();
+            for (int i = 0; i < Board.Line; i++)
+            {
+                for (int j = 0; j < Board.Column; j++)
+                {
+                    if(result[i,j])
+                    {
+                      return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool CanMoveTo(Position position)
+        {
+            return PossibleMoves()[position.Line, position.Column];
+        }
+
         public abstract bool[,] PossibleMoves(); 
     }
 }
