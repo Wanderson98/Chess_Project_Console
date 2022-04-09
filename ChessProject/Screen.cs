@@ -1,4 +1,5 @@
 ﻿using ChessProject.Board;
+using ChessProject.ChessGame;
 using ChessProject.Board.Enums;
 
 namespace ChessProject
@@ -25,6 +26,14 @@ namespace ChessProject
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
+        }
+
+        public static ChessPosition ReadChessPosition()
+        {
+            string readChessPosition = Console.ReadLine();
+            char column = readChessPosition[0];
+            int line = int.Parse(readChessPosition.Substring(1));
+            return new ChessPosition(column, line);
         }
 
         public static void PrintPiece(ChessPiece chessPiece)

@@ -13,21 +13,23 @@ namespace ChessProject
           
             try
             {
-                BoardGame position;
+                ChessGameConfig chessGame = new ChessGameConfig();
 
-                position = new BoardGame(8, 8);
+                while (!chessGame.GameOver)
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(chessGame.Board);
 
-                position.AddPieceInBoard(new Rook(position, PieceColor.Black), new Position(0, 0));
-                position.AddPieceInBoard(new Rook(position, PieceColor.Black), new Position(1, 3));
-                position.AddPieceInBoard(new King(position, PieceColor.Black), new Position(0, 2));
+                    Console.Write("\nEnter the original position: "  );
+                    Position originalPosition = Screen.ReadChessPosition().ToPosition();
+                    Console.Write("Enter the destination position: ");
+                    Position destinationPosition = Screen.ReadChessPosition().ToPosition();
+
+                    chessGame.ExecuteMovement(originalPosition, destinationPosition);
+                }
+
                 
-                position.AddPieceInBoard(new Rook(position, PieceColor.White), new Position(3, 5));
-                position.AddPieceInBoard(new Rook(position, PieceColor.White), new Position(7, 7));
-                position.AddPieceInBoard(new King(position, PieceColor.White), new Position(4, 4));
-
-                Screen.PrintBoard(position);
-
-                Console.ReadLine();
+            
             }
             catch (BoardException ex)
             {

@@ -16,5 +16,10 @@ namespace ChessProject.Board
             Board = board;
             NumberOfMoves = 0;
         }
+
+        public void IncrementNumberOfMoves()
+        {
+            NumberOfMoves++;
+        }
     }
 }

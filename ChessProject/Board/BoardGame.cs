@@ -5,22 +5,22 @@ namespace ChessProject.Board
     {
         public int Line { get; set; }
         public int Column { get; set; }
-        private ChessPiece[,] piece;
+        private ChessPiece[,] chessPiece;
         public BoardGame(int line, int column)
         {
             Line = line;
             Column = column;
-            piece = new ChessPiece[Line, Column];
+            chessPiece = new ChessPiece[Line, Column];
         }
 
         public ChessPiece PiecePosition(int line, int column)
         {
-            return piece[line, column];
+            return chessPiece[line, column];
         }
 
         public ChessPiece PiecePosition(Position position)
         {
-            return piece[position.Line, position.Column];
+            return chessPiece[position.Line, position.Column];
         }
 
         public bool ThereIsPiece(Position position)
@@ -37,10 +37,25 @@ namespace ChessProject.Board
             }
             else
             {
-                this.piece[position.Line, position.Column] = piece;
+                chessPiece[position.Line, position.Column] = piece;
                 piece.Position = position;
             }
 
+        }
+        
+        public ChessPiece RemovePiece(Position position)
+        {
+            if(PiecePosition(position) == null)
+            {
+                return null;
+            }
+            else
+            {
+                ChessPiece piece = PiecePosition(position);
+                piece.Position = null;
+                chessPiece[position.Line, position.Column] = null;
+                return piece;
+            }
         }
 
         public bool ValidPosition(Position position)
