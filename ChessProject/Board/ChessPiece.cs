@@ -22,6 +22,10 @@ namespace ChessProject.Board
             NumberOfMoves++;
         }
 
+        public void DecrementNumberOfMoves()
+        {
+            NumberOfMoves--;
+        }
         public bool ThereIsPossibleMoves()
         {
             bool[,] result = PossibleMoves();
@@ -29,9 +33,9 @@ namespace ChessProject.Board
             {
                 for (int j = 0; j < Board.Column; j++)
                 {
-                    if(result[i,j])
+                    if (result[i, j])
                     {
-                      return true;
+                        return true;
                     }
                 }
             }
@@ -43,6 +47,6 @@ namespace ChessProject.Board
             return PossibleMoves()[position.Line, position.Column];
         }
 
-        public abstract bool[,] PossibleMoves(); 
+        public abstract bool[,] PossibleMoves();
     }
 }
