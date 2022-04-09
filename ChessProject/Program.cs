@@ -10,6 +10,7 @@ namespace ChessProject
     {
         public static void Main(string[] args)
         {
+            /*
             try
             {
                 BoardGame position;
@@ -28,6 +29,11 @@ namespace ChessProject
             {
                 Console.WriteLine(ex.Message);
             }
+            */
+
+            ChessPosition chessPosition = new ChessPosition('h', 1);
+            Console.WriteLine(chessPosition);
+            Console.WriteLine(chessPosition.ToPosition());
            
         }
     }
