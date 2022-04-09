@@ -1,4 +1,5 @@
 ﻿using ChessProject.Board;
+using ChessProject.Board.Exceptions;
 using ChessProject.Board.Enums;
 using ChessProject.ChessGame;
 
@@ -9,17 +10,25 @@ namespace ChessProject
     {
         public static void Main(string[] args)
         {
-            BoardGame position;
+            try
+            {
+                BoardGame position;
 
-            position = new BoardGame(8, 8);
+                position = new BoardGame(8, 8);
 
-            position.AddPieceInBoard(new Rook(position, PieceColor.Black), new Position(0, 0));
-            position.AddPieceInBoard(new Rook(position, PieceColor.Black), new Position(1, 3));
-            position.AddPieceInBoard(new King(position, PieceColor.Black), new Position(2, 4));
+                position.AddPieceInBoard(new Rook(position, PieceColor.Black), new Position(9, 0));
+                position.AddPieceInBoard(new Rook(position, PieceColor.Black), new Position(1, 3));
+                position.AddPieceInBoard(new King(position, PieceColor.Black), new Position(0, 0));
 
-            Screen.PrintBoard(position);
+                Screen.PrintBoard(position);
 
-            Console.ReadLine();
+                Console.ReadLine();
+            }
+            catch (BoardException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+           
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿using ChessProject.Board.Exceptions;
 namespace ChessProject.Board
 {
     internal class BoardGame
@@ -18,10 +18,49 @@ namespace ChessProject.Board
             return piece[line, column];
         }
 
+        public ChessPiece PiecePosition(Position position)
+        {
+            return piece[position.Line, position.Column];
+        }
+
+        public bool ThereIsPiece(Position position)
+        {
+            ValidatePosition(position);
+            return PiecePosition(position) != null;
+        }
+
         public void AddPieceInBoard(ChessPiece piece, Position position)
         {
-            this.piece[position.Line, position.Column] = piece;
-            piece.Position = position;
+            if (ThereIsPiece(position))
+            {
+                throw new BoardException("There is already a piece in this position!!!");
+            }
+            else
+            {
+                this.piece[position.Line, position.Column] = piece;
+                piece.Position = position;
+            }
+
         }
+
+        public bool ValidPosition(Position position)
+        {
+            if (position.Line < 0 || position.Line >= Line || position.Column < 0 || position.Column >= Column)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        public void ValidatePosition(Position position)
+        {
+            if (!ValidPosition(position))
+            {
+                throw new BoardException("Invalid Position!!!");
+            }
+        }
+
     }
 }
