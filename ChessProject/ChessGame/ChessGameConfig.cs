@@ -143,7 +143,21 @@ namespace ChessProject.ChessGame
                 UndoMove(originalPosition, destinationPosition, capturedPiece);
                 throw new BoardException("You can't put yourself in check!!!");
             }
+            
+            ChessPiece piece = Board.PiecePosition(destinationPosition);
+            //Special Move Promotion auto to Queen
+            if(piece is Pawn)
+            {
+                if((piece.Color == PieceColor.White && destinationPosition.Line == 0) || (piece.Color == PieceColor.Black && destinationPosition.Line == 7))
+                {
+                    piece = Board.RemovePiece(destinationPosition);
+                    chessPiecesSet.Remove(piece);
+                    ChessPiece queenPiece = new Queen(Board, piece.Color);
+                    Board.AddPieceInBoard(queenPiece, destinationPosition);
+                    chessPiecesSet.Add(queenPiece);
 
+                }
+            }
             if (ItIsInCheck(Adversary(CurrentPlayer)))
             {
                 Check = true;
@@ -163,8 +177,6 @@ namespace ChessProject.ChessGame
                 Turn++;
                 ChangePlayer();
             }
-
-            ChessPiece piece = Board.PiecePosition(destinationPosition);
 
             // Special Move En Passant
 
