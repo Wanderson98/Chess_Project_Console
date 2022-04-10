@@ -90,7 +90,7 @@ namespace ChessProject
                 Console.Write((8 - i) + " ");
                 for (int j = 0; j < board.Column; j++)
                 {
-                    if (possiblePossitions[i, j] == true)
+                    if (possiblePossitions[i, j])
                     {
                         Console.BackgroundColor = newColor;
                     }

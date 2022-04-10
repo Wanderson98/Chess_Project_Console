@@ -37,6 +37,24 @@ namespace ChessProject.ChessGame
             {
                 piecesCaptured.Add(CapturePiece);
             }
+            //special move Castle king and queen
+
+            if (chessPiece is King && destinationPosition.Column == originalPosition.Column + 2)
+            {
+                Position rookOriginalPosition = new Position(originalPosition.Line, originalPosition.Column + 3);
+                Position rookDestinationPostision = new Position(originalPosition.Line, originalPosition.Column + 1 );
+                ChessPiece rookMove = Board.RemovePiece(rookOriginalPosition);
+                rookMove.IncrementNumberOfMoves();
+                Board.AddPieceInBoard(rookMove, rookDestinationPostision);
+            }
+            if (chessPiece is King && destinationPosition.Column == originalPosition.Column - 2)
+            {
+                Position rookOriginalPosition = new Position(originalPosition.Line, originalPosition.Column - 4);
+                Position rookDestinationPostision = new Position(originalPosition.Line, originalPosition.Column - 1);
+                ChessPiece rookMove = Board.RemovePiece(rookOriginalPosition);
+                rookMove.IncrementNumberOfMoves();
+                Board.AddPieceInBoard(rookMove, rookDestinationPostision);
+            }
 
             return CapturePiece;
         }
@@ -50,7 +68,27 @@ namespace ChessProject.ChessGame
                 Board.AddPieceInBoard(capturedPiece, destinationPosition);
                 piecesCaptured.Remove(capturedPiece);
             }
+
+            //undomove special move Castle
+            if (chessPiece is King && destinationPosition.Column == originalPosition.Column + 2)
+            {
+                Position rookOriginalPosition = new Position(originalPosition.Line, originalPosition.Column + 3);
+                Position rookDestinationPostision = new Position(originalPosition.Line, originalPosition.Column + 1);
+                ChessPiece rookMove = Board.RemovePiece(rookDestinationPostision);
+                rookMove.DecrementNumberOfMoves();
+                Board.AddPieceInBoard(rookMove, rookOriginalPosition);
+            }
+            if (chessPiece is King && destinationPosition.Column == originalPosition.Column - 2)
+            {
+                Position rookOriginalPosition = new Position(originalPosition.Line, originalPosition.Column - 4);
+                Position rookDestinationPostision = new Position(originalPosition.Line, originalPosition.Column - 1);
+                ChessPiece rookMove = Board.RemovePiece(rookDestinationPostision);
+                rookMove.DecrementNumberOfMoves();
+                Board.AddPieceInBoard(rookMove, rookOriginalPosition);
+            }
+
             Board.AddPieceInBoard(chessPiece, originalPosition);
+
         }
         //main method for executing check moves and checkmate and checkmate calls
         public void MakePlay(Position originalPosition, Position destinationPosition)
@@ -242,7 +280,7 @@ namespace ChessProject.ChessGame
             AddNewPiece('b', 1, new Knight(Board, PieceColor.White));
             AddNewPiece('c', 1, new Bishop(Board, PieceColor.White));
             AddNewPiece('d', 1, new Queen(Board, PieceColor.White));
-            AddNewPiece('e', 1, new King(Board, PieceColor.White));
+            AddNewPiece('e', 1, new King(Board, PieceColor.White, this));
             AddNewPiece('f', 1, new Bishop(Board, PieceColor.White));
             AddNewPiece('g', 1, new Knight(Board, PieceColor.White));
             AddNewPiece('h', 1, new Rook(Board, PieceColor.White));
@@ -267,7 +305,7 @@ namespace ChessProject.ChessGame
             AddNewPiece('b', 8, new Knight(Board, PieceColor.Black));
             AddNewPiece('c', 8, new Bishop(Board, PieceColor.Black));
             AddNewPiece('d', 8, new Queen(Board, PieceColor.Black));
-            AddNewPiece('e', 8, new King(Board, PieceColor.Black));
+            AddNewPiece('e', 8, new King(Board, PieceColor.Black, this));
             AddNewPiece('f', 8, new Bishop(Board, PieceColor.Black));
             AddNewPiece('g', 8, new Knight(Board, PieceColor.Black));
             AddNewPiece('h', 8, new Rook(Board, PieceColor.Black));
