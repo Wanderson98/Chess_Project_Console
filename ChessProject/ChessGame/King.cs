@@ -7,7 +7,6 @@ namespace ChessProject.ChessGame
     //class for configuration of the "King" piece, heir class of the chess piece class
     internal class King : ChessPiece
     {   //attribute for the King to have access to the game and perform special moves
-
         private ChessGameConfig Config;
         //constructor
         public King(BoardGame boardGame, PieceColor pieceColor, ChessGameConfig config) : base(pieceColor, boardGame)
@@ -94,6 +93,7 @@ namespace ChessProject.ChessGame
                 result[positionKing.Line, positionKing.Column] = true;
             }
 
+            //special move Castling
             if (NumberOfMoves == 0 && !Config.Check)
             {
                 Position rookPosition = new Position(Position.Line, Position.Column + 3);
