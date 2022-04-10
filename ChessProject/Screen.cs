@@ -79,8 +79,8 @@ namespace ChessProject
             }
             Console.WriteLine("  a b c d e f g h");
         }
-        //overriden method to print board
-        public static void PrintBoard(BoardGame board, bool[,] possiblePossitions)
+        //overriden method to print board with the possibles positions
+        public static void PrintBoard(BoardGame board, bool[,] possiblePositions)
         {
             ConsoleColor originalColor = Console.BackgroundColor;
             ConsoleColor newColor = ConsoleColor.DarkGray;
@@ -90,7 +90,7 @@ namespace ChessProject
                 Console.Write((8 - i) + " ");
                 for (int j = 0; j < board.Column; j++)
                 {
-                    if (possiblePossitions[i, j])
+                    if (possiblePositions[i, j])
                     {
                         Console.BackgroundColor = newColor;
                     }
@@ -110,7 +110,8 @@ namespace ChessProject
         //method to read piece position
         public static ChessPosition ReadChessPosition()
         {
-            string readChessPosition = Console.ReadLine();
+            string readChess = Console.ReadLine();
+            string readChessPosition = readChess.ToLower();
             char column = readChessPosition[0];
             int line = int.Parse(readChessPosition.Substring(1));
             return new ChessPosition(column, line);
