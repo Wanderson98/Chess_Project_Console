@@ -3,20 +3,20 @@ using ChessProject.Board.Exceptions;
 using ChessProject.Board.Enums;
 //main class of the chess game, where the verification of rules, pieces, etc.
 namespace ChessProject.ChessGame
-{   
+{
     internal class ChessGameConfig
-    {   
+    {
         //attributes
         public BoardGame Board { get; private set; }
         public int Turn { get; private set; }
         public PieceColor CurrentPlayer { get; private set; }
         public bool GameOver { get; private set; }
         public bool Check { get; private set; }
-        public  ChessPiece PieceEnPassant { get; private set; }
+        public ChessPiece PieceEnPassant { get; private set; }
 
         private HashSet<ChessPiece> chessPiecesSet;
         private HashSet<ChessPiece> piecesCapturedSet;
-        
+
         //constructor that start the game and the initial configuration 
         public ChessGameConfig()
         {
@@ -46,7 +46,7 @@ namespace ChessProject.ChessGame
             if (chessPiece is King && destinationPosition.Column == originalPosition.Column + 2)
             {
                 Position rookOriginalPosition = new Position(originalPosition.Line, originalPosition.Column + 3);
-                Position rookDestinationPostision = new Position(originalPosition.Line, originalPosition.Column + 1 );
+                Position rookDestinationPostision = new Position(originalPosition.Line, originalPosition.Column + 1);
                 ChessPiece rookMove = Board.RemovePiece(rookOriginalPosition);
                 rookMove.IncrementNumberOfMoves();
                 Board.AddPieceInBoard(rookMove, rookDestinationPostision);
@@ -113,13 +113,13 @@ namespace ChessProject.ChessGame
 
             // undomove special move En Passant
 
-            if(chessPiece is Pawn)
+            if (chessPiece is Pawn)
             {
-                if(originalPosition.Column != destinationPosition.Column && capturedPiece == PieceEnPassant)
+                if (originalPosition.Column != destinationPosition.Column && capturedPiece == PieceEnPassant)
                 {
                     ChessPiece pawnPiece = Board.RemovePiece(destinationPosition);
                     Position pawnPosition;
-                    if(chessPiece.Color == PieceColor.White)
+                    if (chessPiece.Color == PieceColor.White)
                     {
                         pawnPosition = new Position(3, destinationPosition.Column);
                     }
@@ -143,21 +143,58 @@ namespace ChessProject.ChessGame
                 UndoMove(originalPosition, destinationPosition, capturedPiece);
                 throw new BoardException("You can't put yourself in check!!!");
             }
-            
+
             ChessPiece piece = Board.PiecePosition(destinationPosition);
             //Special Move Promotion auto to Queen
-            if(piece is Pawn)
+            if (piece is Pawn)
             {
-                if((piece.Color == PieceColor.White && destinationPosition.Line == 0) || (piece.Color == PieceColor.Black && destinationPosition.Line == 7))
+                if ((piece.Color == PieceColor.White && destinationPosition.Line == 0) || (piece.Color == PieceColor.Black && destinationPosition.Line == 7))
                 {
-                    piece = Board.RemovePiece(destinationPosition);
-                    chessPiecesSet.Remove(piece);
-                    ChessPiece queenPiece = new Queen(Board, piece.Color);
-                    Board.AddPieceInBoard(queenPiece, destinationPosition);
-                    chessPiecesSet.Add(queenPiece);
+                    
+                    Console.Write("Enter with Piece Promotion (R/N/B/Q)");
+                    string promo = Console.ReadLine().ToLower();
+                    if (promo == "q")
+                    {
+                        piece = Board.RemovePiece(destinationPosition);
+                        chessPiecesSet.Remove(piece);
+                        ChessPiece queenPiece = new Queen(Board, piece.Color);
+                        Board.AddPieceInBoard(queenPiece, destinationPosition);
+                        chessPiecesSet.Add(queenPiece);
+                    }
+                    else if (promo == "r")
+                    {
+                        piece = Board.RemovePiece(destinationPosition);
+                        chessPiecesSet.Remove(piece);
+                        ChessPiece rookPiece = new Rook(Board, piece.Color);
+                        Board.AddPieceInBoard(rookPiece, destinationPosition);
+                        chessPiecesSet.Add(rookPiece);
+                    }
+                    else if (promo == "n")
+                    {
+                        piece = Board.RemovePiece(destinationPosition);
+                        chessPiecesSet.Remove(piece);
+                        ChessPiece knightPiece = new Knight(Board, piece.Color);
+                        Board.AddPieceInBoard(knightPiece, destinationPosition);
+                        chessPiecesSet.Add(knightPiece);
+                    }
+                    else if (promo == "b")
+                    {
+                        piece = Board.RemovePiece(destinationPosition);
+                        chessPiecesSet.Remove(piece);
+                        ChessPiece bishopPiece = new Bishop(Board, piece.Color);
+                        Board.AddPieceInBoard(bishopPiece, destinationPosition);
+                        chessPiecesSet.Add(bishopPiece);
+                    }
+                    else
+                    {
+                        UndoMove(originalPosition, destinationPosition, capturedPiece);
+                        throw new Exception("Error in piece selection to promotion");
+      
+                    }
 
                 }
             }
+
             if (ItIsInCheck(Adversary(CurrentPlayer)))
             {
                 Check = true;
@@ -180,7 +217,7 @@ namespace ChessProject.ChessGame
 
             // Special Move En Passant
 
-            if(piece is Pawn && destinationPosition.Line == originalPosition.Line - 2 || destinationPosition.Line == originalPosition.Line + 2)
+            if (piece is Pawn && destinationPosition.Line == originalPosition.Line - 2 || destinationPosition.Line == originalPosition.Line + 2)
             {
                 PieceEnPassant = piece;
             }
@@ -334,6 +371,9 @@ namespace ChessProject.ChessGame
 
 
         }
+
+        //method to realize promotion: 
+
         //method to add chess pieces
         public void AddNewPiece(char column, int line, ChessPiece piece)
         {

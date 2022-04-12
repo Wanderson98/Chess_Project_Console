@@ -47,7 +47,7 @@ namespace ChessProject.Board
         {
             return PossibleMoves()[position.Line, position.Column];
         }
-
+       
         public abstract bool[,] PossibleMoves();
     }
 }
