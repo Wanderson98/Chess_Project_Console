@@ -103,15 +103,14 @@ namespace ChessProject
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  a b c d e f g h");
+            Console.WriteLine("  a b c d e f g h"); 
             Console.BackgroundColor = originalColor;
         }
 
         //method to read piece position
         public static ChessPosition ReadChessPosition()
         {
-            string readChess = Console.ReadLine();
-            string readChessPosition = readChess.ToLower();
+            string readChessPosition = Console.ReadLine().ToLower();
             char column = readChessPosition[0];
             int line = int.Parse(readChessPosition.Substring(1));
             return new ChessPosition(column, line);
